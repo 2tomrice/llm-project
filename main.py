@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from model_service import generate_response
 
 app = FastAPI()
 
@@ -16,4 +17,5 @@ class GenerateRequest(BaseModel):
 
 @app.post("/generate")
 def generate(request: GenerateRequest):
-    return {"prompt_received": request.prompt}
+    response = generate_response(request.prompt)
+    return {"response": response}

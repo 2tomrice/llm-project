@@ -1,7 +1,10 @@
 import json
+import sys
+from pathlib import Path
 
+data_path = Path(sys.argv[1])
 valid_examples = 0
-with open("data/raw/cs_tutor_seed.jsonl", "r", encoding="utf-8") as reader:
+with open(data_path, "r", encoding="utf-8") as reader:
     for line_number, line in enumerate(reader, start=1):
         try:
             data = json.loads(line)

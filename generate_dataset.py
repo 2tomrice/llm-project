@@ -35,30 +35,40 @@ def build_generation_prompt(topic: str) -> str:
     ]
     """
 
-test_topic = topic_list[0]
-prompt = build_generation_prompt(test_topic)
-
-response = client.models.generate_content(
-    model="gemini-3.1-flash-lite", 
-    contents=prompt,
-)
-
-generated_examples = json.loads(response.text)
-
 chat_examples = []
-for example in generated_examples:
-    chat_example = {
-        "messages": [
-            {
-                "role": "user",
-                "content": example["question"]
-            },
-            {
-                "role": "assistant",
-                "content": example["answer"]
-            }
-        ]
-    }
-    chat_examples.append(chat_example)
+for topic in topic_list:
+    print(f"Generating examples for: {topic}")
+    prompt = build_generation_prompt(topic)
+    response = client.models.generate_content(
+        model="gemini-3.1-flash-lite", 
+        contents=prompt,
+        
+    )
+    generated_examples = json.loads(response.text)
+    print(f"Generated {len(generated_examples)} examples")
+
+    
+    for example in generated_examples:
+        chat_example = {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": example["question"]
+                },
+                {
+                    "role": "assistant",
+                    "content": example["answer"]
+                }
+            ]
+        }
+        chat_examples.append(chat_example)
+
+
+with open(OUTPUT_PATH, "w", encoding="utf-8") as writer:
+    for example in chat_examples:
+        writer.write(json.dumps(example) + "\n")
+
+
+
 
 print(f"Converted {len(chat_examples)} examples")

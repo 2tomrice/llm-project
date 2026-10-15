@@ -39,11 +39,26 @@ test_topic = topic_list[0]
 prompt = build_generation_prompt(test_topic)
 
 response = client.models.generate_content(
-    model = "gemini-3.1-flash-lite", 
+    model="gemini-3.1-flash-lite", 
     contents=prompt,
 )
 
 generated_examples = json.loads(response.text)
 
-print(f"Generated {len(generated_examples)} examples")
-print(generated_examples[0]["question"])
+chat_examples = []
+for example in generated_examples:
+    chat_example = {
+        "messages": [
+            {
+                "role": "user",
+                "content": example["question"]
+            },
+            {
+                "role": "assistant",
+                "content": example["answer"]
+            }
+        ]
+    }
+    chat_examples.append(chat_example)
+
+print(f"Converted {len(chat_examples)} examples")

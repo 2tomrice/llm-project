@@ -1,8 +1,14 @@
 import json
 from pathlib import Path
+from google import genai
 
+
+PROJECT_ID = "cs-tutor-llm-2026-47"
+LOCATION = "global"
 QUESTIONS_PER_TOPIC = 20
 OUTPUT_PATH = Path("data/raw/cs_tutor_candidates.jsonl")
+
+client = genai.Client(vertexai=True, project=PROJECT_ID, location=LOCATION)
 
 TOPICS_PATH = Path("data/raw/topics.json")
 
@@ -28,3 +34,16 @@ def build_generation_prompt(topic: str) -> str:
     }}
     ]
     """
+
+test_topic = topic_list[0]
+prompt = build_generation_prompt(test_topic)
+
+response = client.models.generate_content(
+    model = "gemini-3.1-flash-lite", 
+    contents=prompt,
+)
+
+generated_examples = json.loads(response.text)
+
+print(f"Generated {len(generated_examples)} examples")
+print(generated_examples[0]["question"])

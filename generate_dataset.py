@@ -26,6 +26,11 @@ def build_generation_prompt(topic: str) -> str:
     Each example should contain a student question and a clear tutor-style answer. Answers should explain the concept in accessible language, include a small example where useful, and introduce important terminology without being overly complex or overly brief.
     Cover a broad range of concepts, terminology, examples, operations, and trade-offs within {topic}. Avoid duplicate or near-duplicate questions.
     Return the examples in the required structured format and do not include any additional commentary.
+    Prioritize technical accuracy over oversimplification.
+    Avoid absolute claims unless they are universally true. When discussing algorithmic complexity, clearly distinguish average-case, worst-case, and amortized complexity where relevant.
+    Do not describe Big O notation as inherently representing the worst case.
+    When a concept depends on a programming language, implementation, operating system, or other context, state that dependency instead of presenting it as a universal rule.
+    Include important caveats when omitting them could teach the student a misconception. Keep these caveats concise and beginner-friendly.
     Return only valid JSON in this format:
     [
     {{
@@ -45,7 +50,15 @@ for topic in topic_list:
         
     )
     generated_examples = json.loads(response.text)
+
+    if len(generated_examples) != QUESTIONS_PER_TOPIC:
+        raise ValueError(
+            f"Expected {QUESTIONS_PER_TOPIC} examples for {topic}, "
+            f"but got {len(generated_examples)}"
+    )
+
     print(f"Generated {len(generated_examples)} examples")
+
 
     
     for example in generated_examples:

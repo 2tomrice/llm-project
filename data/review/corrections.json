@@ -1,0 +1,29 @@
+[
+
+  {
+    "question": "If an algorithm has a complexity of O(2n), is that the same as O(n)?",
+    "corrected_answer": "Yes. In Big O notation, O(2n) simplifies to O(n) because constant factors are ignored when describing asymptotic growth. This is different from O(2^n), which is exponential and grows much faster than O(n)."
+  },
+  {
+    "question": "What does the 'ISOLATION LEVEL' in a transaction actually control?",
+    "corrected_answer": "ISOLATION LEVEL in a database transaction controls how and when changes made by concurrent transactions become visible to other transactions, trading off data consistency against database performance and concurrency."
+  },
+  {
+    "question": "What does 'this' (or 'self') refer to inside a class method?",
+    "corrected_answer": "In an instance method, this in languages such as Java or C++, or self in Python, refers to the current object instance. It lets the method access that object's attributes and other instance methods. In Python, a method decorated with @classmethod instead receives the class itself, conventionally named cls."
+  },
+  {
+    "question": "How does context switching impact performance?",
+    "corrected_answer": "A context switch requires the system to save the state of one process or thread and restore another, which adds CPU overhead and can reduce cache efficiency. Context switching is necessary for multitasking, but excessive switching can reduce overall performance because more time is spent switching than doing useful work."
+  },
+  {
+    "question": "Can you explain what a Tries (prefix tree) is used for?",
+    "corrected_answer": "A Trie, or prefix tree, stores strings character by character along paths from the root. It is useful for prefix-based tasks such as autocomplete and dictionary lookups. Reaching the node for a prefix takes roughly O(L), where L is the prefix length, but returning all matching strings also requires traversing the matching subtree, so the total work depends on the number of results."
+  },
+  {
+    "question": "What is a heuristic in algorithm design?",
+    "corrected_answer": "A heuristic in algorithm design is a practical strategy or rule of thumb used to find a useful solution efficiently when an exact approach may be too expensive or unnecessary. Heuristics can greatly reduce computation time, but they do not necessarily guarantee the optimal solution."
+  }
+
+
+]

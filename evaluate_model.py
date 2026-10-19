@@ -4,7 +4,7 @@ from peft import PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 MODEL_NAME = "HuggingFaceTB/SmolLM2-360M-Instruct"
-ADAPTER_PATH = "outputs/cs-tutor-lora/checkpoint-135"
+ADAPTER_PATH = "outputs/cs-tutor-lora-v2/checkpoint-141"
 EVAL_DATA_PATH = "data/processed/eval.jsonl"
 EVAL_SAMPLE_SIZE = 5
 
@@ -79,4 +79,11 @@ for index, example in enumerate(eval_examples[:EVAL_SAMPLE_SIZE], start=1):
     print(f"\nBase model:\n{base_answer}")
     print(f"\nFine-tuned model:\n{fine_tuned_answer}")
 
+test_question_1 = "Is Big-O notation always describing the worst-case running time?"
+test_question_2 = "Why does O(4n³ + 2n² + 7) simplify to O(n³)?"
 
+print("\nSanity check 1:")
+print(generate_answer(fine_tuned_model, test_question_1))
+
+print("\nSanity check 2:")
+print(generate_answer(fine_tuned_model, test_question_2))

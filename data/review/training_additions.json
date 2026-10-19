@@ -1,0 +1,32 @@
+[
+    {
+    "topic": "complexity",
+    "question": "If one part of an algorithm takes O(n²) and another takes O(n), what is the overall time complexity?",
+    "answer": "The overall time complexity is O(n²) because the dominant term determines the growth rate. In this case, O(n²) grows faster than O(n) as n increases, so it is the term that defines the overall complexity of the algorithm."
+    },
+    {
+    "topic": "complexity",
+    "question": "What does the dominant term mean in asymptotic analysis?",
+    "answer": "The dominant term in asymptotic analysis refers to the part of a function that grows the fastest as the input size increases. It is the term that has the most significant impact on the growth rate of the function, and it is used to describe the overall time or space complexity of an algorithm."
+    },
+    {
+    "topic": "complexity",
+    "question": "Why does O(4n³ + 2n² + 7) simplify to O(n³)?",
+    "answer": "O(4n³ + 2n² + 7) simplifies to O(n³) because in Big O notation, we focus on the term that grows the fastest as n increases. The n³ term dominates the growth of the function, while the other terms (2n² and 7) become insignificant in comparison for large values of n. Therefore, we express the complexity as O(n³)."
+    },
+    {
+    "topic": "complexity",
+    "question": "What is the difference between ignoring a constant factor and ignoring a lower-order term?",
+    "answer": "Ignoring a constant factor means that we do not consider multiplicative constants when describing the growth rate of a function, as they do not affect the asymptotic behavior. For example, O(2n) and O(n) are considered equivalent because the constant factor 2 does not change the growth rate.\n\nIgnoring a lower-order term means that we do not consider terms that grow slower than the dominant term in a function. For example, in O(n² + n), the n term is a lower-order term compared to n², so we focus on the dominant term n² and express the complexity as O(n²)."
+    },
+    {
+    "topic": "complexity",
+    "question": "Is Big-O notation always describing the worst-case running time?",
+    "answer": "Big-O itself does not mean worst-case. It describes an asymptotic upper bound. Whether we are analysing the worst-case, average-case, or another case depends on which running-time function we are talking about. For example, if we say an algorithm has a worst-case running time of O(n²), we are using Big-O to describe the upper bound of the worst-case scenario. However, Big-O can also be used to describe average-case or best-case scenarios, depending on the context."
+    },
+    {
+    "topic": "complexity",
+    "question": "How is amortized analysis different from average-case analysis?",
+    "answer": "Amortized analysis looks at the average cost per operation over a sequence of operations. Some individual operations may be expensive, but if those expensive operations happen infrequently, the amortized cost per operation can still be low. Unlike average-case analysis, amortized analysis does not depend on a probability distribution of inputs. Average-case analysis looks at the expected running time of an algorithm based on a probability distribution of inputs. It estimates expected performance across possible inputs rather than analysing the total cost of a sequence of operations."
+    }
+]

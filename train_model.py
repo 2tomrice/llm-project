@@ -43,7 +43,7 @@ train_dataset = dataset["train"].remove_columns(["topic"])
 eval_dataset = dataset["eval"].remove_columns(["topic"])
 
 training_args = SFTConfig(
-    output_dir="outputs/cs-tutor-lora",
+    output_dir="outputs/cs-tutor-lora-v2",
     num_train_epochs=3,
     per_device_train_batch_size=1,
     per_device_eval_batch_size=1,
@@ -67,5 +67,5 @@ trainer = SFTTrainer(
 )
 print("Trainer initialized successfully")
 trainer.train()
-trainer.save_model("outputs/cs-tutor-lora/final")
-tokenizer.save_pretrained("outputs/cs-tutor-lora/final")
+trainer.save_model("outputs/cs-tutor-lora-v2/final")
+tokenizer.save_pretrained("outputs/cs-tutor-lora-v2/final")

@@ -6,7 +6,7 @@ device = torch.device("cuda" if torch.cuda.is_available()
                       else "cpu")
 
 MODEL_NAME = "HuggingFaceTB/SmolLM2-360M-Instruct"
-ADAPTER_PATH = "outputs/cs-tutor-lora-v2/checkpoint-141"
+ADAPTER_PATH = "model_adapter"
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model = AutoModelForCausalLM.from_pretrained(MODEL_NAME)
 model = PeftModel.from_pretrained(model, ADAPTER_PATH)

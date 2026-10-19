@@ -10,6 +10,8 @@ TRAIN_DATA_PATH = Path("data/processed/train.jsonl")
 EVAL_DATA_PATH = Path("data/processed/eval.jsonl")
 CORRECTIONS_PATH = Path("data/review/corrections.json")
 
+TRAINING_ADDITIONS_PATH = Path("data/review/training_additions.json")
+
 EVAL_PER_TOPIC = 2
 RANDOM_SEED = 42
 
@@ -92,6 +94,30 @@ for topic_index, topic in enumerate(topics):
     rng.shuffle(topic_examples)
     eval_examples.extend(topic_examples[:EVAL_PER_TOPIC])
     train_examples.extend(topic_examples[EVAL_PER_TOPIC:])
+
+with open(TRAINING_ADDITIONS_PATH, "r", encoding="utf-8") as reader:
+    training_additions = json.load(reader)
+
+
+
+
+
+
+for addition in training_additions:
+    training_example = {
+        "topic": addition["topic"],
+        "messages": [
+            {
+                "role": "user",
+                "content": addition["question"]
+            },
+            {
+                "role": "assistant",
+                "content": addition["answer"]
+            }
+        ]
+    }
+    train_examples.append(training_example)
 print(f"Training examples: {len(train_examples)}")
 print(f"Evaluation examples: {len(eval_examples)}")
 

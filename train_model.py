@@ -66,3 +66,6 @@ trainer = SFTTrainer(
     processing_class=tokenizer,
 )
 print("Trainer initialized successfully")
+trainer.train()
+trainer.save_model("outputs/cs-tutor-lora/final")
+tokenizer.save_pretrained("outputs/cs-tutor-lora/final")

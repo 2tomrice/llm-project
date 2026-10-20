@@ -1,12 +1,13 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel
 import torch
+import os
 device = torch.device("cuda" if torch.cuda.is_available() 
                       else "mps" if torch.backends.mps.is_available() 
                       else "cpu")
 
 MODEL_NAME = "HuggingFaceTB/SmolLM2-360M-Instruct"
-ADAPTER_PATH = "model_adapter"
+ADAPTER_PATH = os.getenv("ADAPTER_PATH", "outputs/cs-tutor-lora-v2/checkpoint-141")
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model = AutoModelForCausalLM.from_pretrained(MODEL_NAME)
 model = PeftModel.from_pretrained(model, ADAPTER_PATH)

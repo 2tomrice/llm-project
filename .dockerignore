@@ -8,3 +8,4 @@ outputs/*
 !outputs/cs-tutor-lora-v2/checkpoint-141/
 !outputs/cs-tutor-lora-v2/checkpoint-141/adapter_config.json
 !outputs/cs-tutor-lora-v2/checkpoint-141/adapter_model.safetensors
+gha-creds-*.json

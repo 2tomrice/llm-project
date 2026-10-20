@@ -1,0 +1,74 @@
+name: Deploy CS Tutor
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          project_id: cs-tutor-llm-2026-47
+          workload_identity_provider: projects/32775674218/locations/global/workloadIdentityPools/github-actions-pool/providers/github-provider
+          service_account: github-actions-deployer@cs-tutor-llm-2026-47.iam.gserviceaccount.com
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v3
+      
+      - name: Download model adapter
+        run: |
+          mkdir -p outputs/cs-tutor-lora-v2/checkpoint-141
+
+          gcloud storage cp \
+            gs://cs-tutor-llm-2026-47-model-artifacts/cs-tutor-lora-v2/adapter_config.json \
+            outputs/cs-tutor-lora-v2/checkpoint-141/adapter_config.json
+
+          gcloud storage cp \
+            gs://cs-tutor-llm-2026-47-model-artifacts/cs-tutor-lora-v2/adapter_model.safetensors \
+            outputs/cs-tutor-lora-v2/checkpoint-141/adapter_model.safetensors
+          
+      - name: Configure Docker authentication
+        run: |
+          gcloud auth configure-docker europe-west2-docker.pkg.dev --quiet
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t europe-west2-docker.pkg.dev/cs-tutor-llm-2026-47/cs-tutor/cs-tutor-api:${{ github.sha }} \
+            -t europe-west2-docker.pkg.dev/cs-tutor-llm-2026-47/cs-tutor/cs-tutor-api:latest \
+            .
+
+      - name: Push Docker image
+        run: |
+          docker push europe-west2-docker.pkg.dev/cs-tutor-llm-2026-47/cs-tutor/cs-tutor-api:${{ github.sha }}
+          docker push europe-west2-docker.pkg.dev/cs-tutor-llm-2026-47/cs-tutor/cs-tutor-api:latest
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy cs-tutor-api \
+            --image europe-west2-docker.pkg.dev/cs-tutor-llm-2026-47/cs-tutor/cs-tutor-api:${{ github.sha }} \
+            --region europe-west2 \
+            --memory 4Gi \
+            --cpu 1 \
+            --concurrency 1 \
+            --max-instances 1 \
+            --quiet
+            
+      - name: Test deployment
+        run: |
+          SERVICE_URL=$(gcloud run services describe cs-tutor-api \
+            --region=europe-west2 \
+            --format='value(status.url)')
+
+          curl --fail --retry 5 --retry-delay 5 "$SERVICE_URL/health"
